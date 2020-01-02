@@ -217,8 +217,7 @@ Then the result would be:
         "state": "New York",
         "zipCode": "10101"
       }
-    ],
-    "next_url": "http://example.com/addresses/?page=2"
+    ]
   }
 }
 ```
@@ -231,7 +230,53 @@ The `address` property can also be converted into a link and its value moved to 
 }
 ```
 
-A client should continue to be able to specify the relationship `address` and get the same result whether it's a single address, array of addresses, a link, a collection, or a link to a collection.
+A client should continue to be able to specify the relationship `address` and get the same result whether it's a single address, array of addresses, a link, a collection, or a link to a collection. It will always be:
+
+```js
+[
+  {
+    "street": "123 Main St.",
+    "city": "New York",
+    "state": "New York",
+    "zipCode": "10101"
+  },
+  {
+    "street": "343 Elm St.",
+    "city": "New York",
+    "state": "New York",
+    "zipCode": "10101"
+  }
+]
+```
+
+#### Paginated Collection
+
+A collection MAY be paginated. 
+
+```js
+{
+  "profile_url": "https://github.com/smizell/graphablejson/wiki/Collection",
+  "url": "http://example.com/addresses/?page=3",
+  "item": [
+      {
+        "street": "123 Main St.",
+        "city": "New York",
+        "state": "New York",
+        "zipCode": "10101"
+      },
+      {
+        "street": "343 Elm St.",
+        "city": "New York",
+        "state": "New York",
+        "zipCode": "10101"
+      }
+  ],
+  "next_url": "http://example.com/addresses/?page=4"
+  "prev_url": "http://example.com/addresses/?page=2"
+}
+```
+
+The stream of values should be opaque to the client developer. They should be able to iterate over the values whether they are in an array locally or spread across many pages of the collection.
 
 #### Collection of links
 
