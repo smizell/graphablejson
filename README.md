@@ -251,7 +251,7 @@ A client should continue to be able to specify the relationship `address` and ge
 
 #### Paginated Collection
 
-A collection MAY be paginated. 
+A collection MAY be paginated. The `next` and `prev` relationships MAY be used to specify other pages.
 
 ```js
 {
@@ -330,7 +330,7 @@ When the `address` property is moved to the next version and changed to an objec
 }
 ```
 
-Then the client developer should be able to specify the version for `address` and get the correct value.
+Then the client developer should be able to specify the version for `address` along with `v2` and get the correct value. If no version is specified, the original property `address` MUST be returned.
 
 Once the original version is deprecated (note, this specification does not handle deprecation), the `address` property can be converted and the `v2` can be removed.
 
