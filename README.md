@@ -6,21 +6,24 @@ Graphable JSON is a specification that defines a contract between a client and a
 
 Graphable JSON aims to weaken the coupling between clients and servers by weakening coupling that is commonly used in API designs. Examples of strong coupling in an API include:
 
-1. **Structure**: Client are generally coupled to the structure of an API resource or schema. Graphable JSON addresses this by focusing on relationships. 
-1. **Location**: Clients are many times coupled to the URI structure or location of a resource. Graphable JSON addresses this by allowing for links.
-1. **Type**: Clients usually depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable.
+1. **Structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. Graphable JSON addresses this by focusing on relationships. 
+1. **Location**: Clients are many times coupled to the URI structure or location of a resource. Graphable JSON addresses this with hyperlinks. A value can either be included in a response or linked.
+1. **Type**: Clients usually depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable, allowing versions of a relationshio to live together and phased out.
 
 When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
 
-Graphable JSON defers these decisions to later, allowing APIs to evolve. API designers can handle about resources and structure later. Additionally, Graphable JSON allows for converting arrays of values to paginated resources called collections.
+Graphable JSON defers these decisions to later, allowing APIs to evolve over time without client breakages. API designers can convert values into their own resources later and even link to new resources. Additionally, Graphable JSON allows for converting arrays of values to paginated resources called collections. API designers don't have to chose between an array or collection upfront.
 
-To note, it is impossible to remove coupling. The Graphable JSON approach weakens coupling by imposing rules for dealing with JSON in hopes of making API design easier and APIs more evolvable.
+To note, it is impossible to remove coupling, but it is possible to make that coupling easier to deal with over time. The Graphable JSON approach weakens coupling by imposing rules for dealing with JSON in hopes of making API design easier and APIs more evolvable.
 
 ## Specification
 
-1. Properties as relationships
-1. Relationships as links
-1. Collections as their own resource
+This specification adds the following rules when dealing with JSON:
+
+1. Treating properties as relationships
+1. Converting values into links
+1. Using collections for larger lists of data
+1. Versioning properties to allow granular changes
 
 ### Treating properties as relationships
 
@@ -107,13 +110,13 @@ Then the result is:
 ["jdoe@example.com", "jane.doe@example.com"]
 ```
 
-### Linking to resources
+### Converting values into links
 
-As shown, the values of properties can evolve from no value to an array of values. At some point, a value or array of values will need to be come its own resource.
+As shown, the values of properties can evolve from no value to an array of values. At some point, a value or array of values will need to become its own resource.
 
-Graphable JSON make this possible by using hyperlinks as one would use in a webpage. Instead of including the data, the data is linked. Links use the [RESTful JSON](https://restfuljson.org) pattern to make this simple, which says to append `_url` or `Url` to the property name and use the URL as the value.
+Graphable JSON makes this possible by using hyperlinks similar to webpages. Instead of including the data, the data is linked. Links use the [RESTful JSON](https://restfuljson.org) pattern to make this simple, which says to append `_url` or `Url` to the property name and use the URL as the value.
 
-These links follow the same rules as the examples above where the value of a link can either be a single URL or an array of URLs.
+Links follow the same rules as the examples above where the value of a link can either be a single URL or an array of URLs.
 
 Client developers SHOULD write code that specifies the desired relationship. The Graphable JSON client should look for the property, and if not found, look for the link. The fetching of the link should be opaque to the client.
 
@@ -134,9 +137,9 @@ Given the object:
 
 When the `address` property is converted to a link,
 
-Then the data is moved to its won resource,
+Then the data is moved to its own resource with its own URL,
 
-And the property name is converted to `address_url` or `addressUrl`.
+And the property name is converted from `address` to `address_url` or `addressUrl`.
 
 ```js
 {
@@ -144,7 +147,7 @@ And the property name is converted to `address_url` or `addressUrl`.
 }
 ```
 
-Then the client developer should get a stream of one address when the `address` relationship is specified.
+And the client developer should get a stream when the `address` relationship is specified. The client developer should not care if the value is local in the original object or linked. They code to the vocabulary.
 
 #### From a single link to many links
 
@@ -168,11 +171,11 @@ When the property is converted to a list of links:
 }
 ```
 
-Then the client developer should get a stream of two addresses when the `address` relationship is specified.
+Then the client developer should get a stream of addresses when the `address` relationship is specified.
 
-### Collection Resource
+### Collections of resources in place of arrays
 
-It's common for an API to include collections for resources. These collections can be paginated and filtered based on the individual API needs.
+It's common for an API to include collections for resources. Graphable JSON allows an API provider to convert from a single value to an array to a collection resource all without breaking the client. These collections can be paginated and filtered based on the individual API needs to let the API grown and scale where needed.
 
 A collection resources is denoted by an object with a `profile` links set to `https://github.com/smizell/graphablejson/wiki/Collection` (this is subject to change later). When that value is found, the object MUST be treated as a collection.
 
@@ -208,7 +211,9 @@ Given the object:
 
 When the `address` property is converted a collection,
 
-Then the new resource would be:
+Then a new resource is created with its own URL,
+
+And the new resource would be:
 
 ```js
 {
@@ -231,7 +236,7 @@ Then the new resource would be:
 }
 ```
 
-And the original object would be change to:
+And the original object would be changed to:
 
 ```js
 {
