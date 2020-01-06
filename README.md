@@ -382,3 +382,5 @@ This brings up an important point. Starting out, an API _could_ be a single resp
 ## About this document
 
 This document was authored by Stephen Mizell in an effort to lower the barrier to entry for implementing and consuming APIs. This document is licensed under the MIT license. The requirements here conform to RFC 2119.
+
+This specification was heavily inspired by the way [JSON-LD](https://json-ld.org/) handles data as a graph.
