@@ -310,9 +310,7 @@ Collections can have the literal values included in `item` or they can have link
 
 Since the `item` value is a relationship, it takes on the same characteristics as any other type of value. Therefore, it can be `item`, a link, or an array of links.
 
-### Changing Types (Experimental)
-
-Warning: this section is experimental. The others have been developed and tested, but this section has not.
+### Changing Types
 
 Properties themselves MAY be versioned in order to allow them to change over time. This means that an API can have multiple versions of a property living alongside other versions.
 
