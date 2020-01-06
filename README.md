@@ -1,10 +1,16 @@
 # Graphable JSON Specification
 
-Graphable JSON is a specification that defines a contract between a client and a server in order to reduce or eliminate common breaking changes. The goal is to allow APIs to evolve independently by weakening the coupling between clients and servers.
+Graphable JSON is a specification that defines a contract between a client and a server in order to reduce or eliminate common breaking changes and help APIs evolve over time.
 
 ## Overview
 
-Graphable JSON aims to weaken the coupling between clients and servers by weakening coupling that is commonly used in API designs. Examples of strong coupling in an API include:
+It's difficult to evolve an API without breaking clients. API clients generally rely on the API to be a specific way that prevents the API from changing organically. This is because the API clients are strongly coupled to the implementation of the API design.
+
+When talking of coupling here, we talk about API changes that require client changes. 
+
+### How we strongly couple the client and server
+
+Examples of strong coupling in an API include:
 
 1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. Graphable JSON addresses this by focusing on relationships. 
 1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource. Graphable JSON addresses this with hyperlinks. A value can either be included in a response or linked.
@@ -12,9 +18,15 @@ Graphable JSON aims to weaken the coupling between clients and servers by weaken
 
 When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
 
-Graphable JSON defers these decisions to later, allowing APIs to evolve over time without client breakages. API designers can convert values into their own resources later and even link to new resources. Additionally, Graphable JSON allows for converting arrays of values to paginated resources called collections. API designers don't have to chose between an array or collection upfront.
+### Trying to weaken coupling
 
-To note, it is impossible to remove coupling, but it is possible to make that coupling easier to deal with over time. The Graphable JSON approach weakens coupling by imposing rules for dealing with JSON in hopes of making API design easier and APIs more evolvable.
+**Graphable JSON aims to weaken the coupling between clients and APIs by weakening the coupling**. In other words, Graphable JSON defines rules that allow an API change without requiring the clients to change.
+
+1. **Graphs over strict structure**: Instead of defining and interacting with data in as a strict tree, Graphable JSON encourages treating data as a graph. An API designer might say a customer has an email. With a strict structure, that relationship is fixed to one email or many emails. With a graph, the designer does not need to specify how many emails, and a client can rely on one email or many emails depending on the context.
+1. **Links over hardcoding**: Instead of hardcoding a client to expect a property, a client should look for the property or a link to the values. Links are the reason the web as we know it thrived, and links can help make APIs more durable.
+1. **Queries over directly interacting with JSON**: For JSON responses to evolve independently, client implementations must interact with the API responses by specifying and querying what it expects to find rather than interacting with the JSON directly. This separation is the key to weakening coupling.
+
+With the principles in mind, Graphable JSON can impose rules on designing an interacting with an API that encourage longevity and agility. Teams can iterate on designs and changes quickly with more confidence in how it affects clients. API providers can make optimizations to help clients without redeploying the clients.
 
 ## Specification
 
