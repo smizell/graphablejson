@@ -27,7 +27,7 @@ This specification adds the following rules when dealing with JSON:
 
 ### Treating properties as relationships
 
-In many API, a property in a JSON object denotes structure—it shows how an object has a property of a given value. There are tools for validating this specific structure that create strong coupling between the client and server. This creates rigidity and prevents the object from evolving organically over time.
+In many APIs, a property in a JSON object denotes a structure—it shows how an object has a property of a given value. There are tools for validating this specific structure that create strong coupling between the client and server. This creates rigidity and prevents the object from evolving organically over time.
 
 Rather than structure, Graphable JSON denotes a property as a relationship to a stream of values. This means the stream MAY be:
 
@@ -36,7 +36,7 @@ Rather than structure, Graphable JSON denotes a property as a relationship to a 
 1. A stream of one value if the literal value is a object, string, number, or boolean
 1. A stream of one or more values if the literal value is an array
 
-Treating the result as a stream of values allows for the relationship to evolve. It also reduced the errors that can happen from properties being undefined or null.
+Treating the result as a stream of values allows for the relationship to evolve. It also reduced the errors that can happen from properties being undefined or null—they are both treated as an empty stream of data.
 
 Below are examples of how these properties are handled as relationships that result in streams of data.
 
@@ -114,11 +114,11 @@ Then the result is:
 
 As shown, the values of properties can evolve from no value to an array of values. At some point, a value or array of values will need to become its own resource.
 
-Graphable JSON makes this possible by using hyperlinks similar to webpages. Instead of including the data, the data is linked. Links use the [RESTful JSON](https://restfuljson.org) pattern to make this simple, which says to append `_url` or `Url` to the property name and use the URL as the value.
+Graphable JSON makes this possible by using hyperlinks similar to webpages. Instead of including the data, the data is linked. Links use the [RESTful JSON](https://restfuljson.org) pattern to make this simple—to make a link, append `_url` or `Url` to the property name and use the URL as the value.
 
-Links follow the same rules as the examples above where the value of a link can either be a single URL or an array of URLs.
+Additionally, link values follow the same rules as the examples above where the value can either be a single URL or an array of URLs.
 
-Client developers SHOULD write code that specifies the desired relationship. The Graphable JSON client should look for the property, and if not found, look for the link. The fetching of the link should be opaque to the client.
+Client developers SHOULD write code that specifies the desired relationship instead of looking for links. A Graphable JSON client should look for the property, and if not found, look for the link. The fetching of the link should be opaque to the client.
 
 #### From literal value to link
 
