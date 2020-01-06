@@ -1,23 +1,28 @@
 # Graphable JSON Specification
 
-Graphable JSON is a specification that defines a contract between a client and a server in order to reduce or eliminate common breaking changes. The goal is to allow APIs to evolve independently by weaking the coupling between clients and servers.
+Graphable JSON is a specification that defines a contract between a client and a server in order to reduce or eliminate common breaking changes. The goal is to allow APIs to evolve independently by weakening the coupling between clients and servers.
 
 ## Overview
 
-Graphable JSON aims to reduce breaking changes and lower the barrier to entry for APIs. Some of the more common breaking changes happen when:
+Graphable JSON aims to weaken the coupling between clients and servers by weakening coupling that is commonly used in API designs. Examples of strong coupling in an API include:
 
-1. A value needs to change from a single value to an array of values
-1. An object needs to become a separate resource that MAY be linked
-1. A list of resources needs to become a paginated collection
-1. A value needs to change its type
+1. **Structure**: Client are generally coupled to the structure of an API resource or schema. Graphable JSON addresses this by focusing on relationships. 
+1. **Location**: Clients are many times coupled to the URI structure or location of a resource. Graphable JSON addresses this by allowing for links.
+1. **Type**: Clients usually depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable.
 
-To handle these changes, Graphable JSON has the following tenets.
+When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
 
-1. A property defines a relationship between an entity and a value
-1. A value MAY be a literal value or a link
-1. A value MAY be a collection or a link to a collection
+Graphable JSON defers these decisions to later, allowing APIs to evolve. API designers can handle about resources and structure later. Additionally, Graphable JSON allows for converting arrays of values to paginated resources called collections.
 
-### Property as relationship
+To note, it is impossible to remove coupling. The Graphable JSON approach weakens coupling by imposing rules for dealing with JSON in hopes of making API design easier and APIs more evolvable.
+
+## Specification
+
+1. Properties as relationships
+1. Relationships as links
+1. Collections as their own resource
+
+### Treating properties as relationships
 
 In many API, a property in a JSON object denotes structure—it shows how an object has a property of a given value. There are tools for validating this specific structure that create strong coupling between the client and server. This creates rigidity and prevents the object from evolving organically over time.
 
@@ -102,11 +107,15 @@ Then the result is:
 ["jdoe@example.com", "jane.doe@example.com"]
 ```
 
-### Linked Value
+### Linking to resources
 
-The first tenant of Graphable JSON allowed for the property to evolve in the context of the object. However, there is a need many times to convert an object into its own resource in the API. This can be achieved by converting the literal value into a link.
+As shown, the values of properties can evolve from no value to an array of values. At some point, a value or array of values will need to be come its own resource.
 
-Links use the [RESTful JSON](https://restfuljson.org) pattern. The properties for links denote relationship, so the literal values for the link properties MAY be a single URI or an array of URIs.
+Graphable JSON make this possible by using hyperlinks as one would use in a webpage. Instead of including the data, the data is linked. Links use the [RESTful JSON](https://restfuljson.org) pattern to make this simple, which says to append `_url` or `Url` to the property name and use the URL as the value.
+
+These links follow the same rules as the examples above where the value of a link can either be a single URL or an array of URLs.
+
+Client developers SHOULD write code that specifies the desired relationship. The Graphable JSON client should look for the property, and if not found, look for the link. The fetching of the link should be opaque to the client.
 
 #### From literal value to link
 
@@ -123,15 +132,17 @@ Given the object:
 }
 ```
 
-When the `address` property is converted to a link:
+When the `address` property is converted to a link,
+
+Then the data is moved to its won resource,
+
+And the property name is converted to `address_url` or `addressUrl`.
 
 ```js
 {
   "address_url": "http://example.com/address/444"
 }
 ```
-
-And when it's moved to its own resource,
 
 Then the client developer should get a stream of one address when the `address` relationship is specified.
 
@@ -197,32 +208,30 @@ Given the object:
 
 When the `address` property is converted a collection,
 
-Then the result would be:
+Then the new resource would be:
 
 ```js
 {
-  "address": {
-    "profile_url": "https://github.com/smizell/graphablejson/wiki/Collection",
-    "url": "http://example.com/addresses/",
-    "item": [
-      {
-        "street": "123 Main St.",
-        "city": "New York",
-        "state": "New York",
-        "zipCode": "10101"
-      },
-      {
-        "street": "343 Elm St.",
-        "city": "New York",
-        "state": "New York",
-        "zipCode": "10101"
-      }
-    ]
-  }
+  "profile_url": "https://github.com/smizell/graphablejson/wiki/Collection",
+  "url": "http://example.com/addresses/",
+  "item": [
+    {
+      "street": "123 Main St.",
+      "city": "New York",
+      "state": "New York",
+      "zipCode": "10101"
+    },
+    {
+      "street": "343 Elm St.",
+      "city": "New York",
+      "state": "New York",
+      "zipCode": "10101"
+    }
+  ]
 }
 ```
 
-The `address` property can also be converted into a link and its value moved to another resource
+And the original object would be change to:
 
 ```js
 {
@@ -251,7 +260,7 @@ A client should continue to be able to specify the relationship `address` and ge
 
 #### Paginated Collection
 
-A collection MAY be paginated. The `next` and `prev` relationships MAY be used to specify other pages.
+A collection MAY be paginated. The `next` and `prev` relationships MAY be used to specify other pages in the collection.
 
 ```js
 {
@@ -360,6 +369,10 @@ There are also other areas to consider to protect against breaking changes.
 Following rules like these can allow the client to get all of the benefits of something like GraphQL without using GraphQL itself. In other words, the client developer can specify what they want from the API and the client itself can go out and get the necessary data—whether it's in a single response or many responses.
 
 This brings up an important point. Starting out, an API _could_ be a single response. This could allow API designers to think only about the vocabulary and relationships of an API and break things out later into resources with individual URLs. Clients shouldn't break when those changes happen.
+
+## Implementations
+
+1. [Graphable JSON JavaScript](https://github.com/smizell/graphablejson-js)
 
 ## About this document
 
