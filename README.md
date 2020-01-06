@@ -8,7 +8,7 @@ Graphable JSON aims to weaken the coupling between clients and servers by weaken
 
 1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. Graphable JSON addresses this by focusing on relationships. 
 1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource. Graphable JSON addresses this with hyperlinks. A value can either be included in a response or linked.
-1. **Coupling to type**: Clients generally depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable, allowing versions of a relationshio to live together and phased out.
+1. **Coupling to type**: Clients generally depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable, allowing versions of a relationship to live together and phased out.
 
 When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
 
