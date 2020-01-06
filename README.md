@@ -4,19 +4,19 @@ Graphable JSON is a specification that defines a contract between a client and a
 
 ## Overview
 
-It's difficult to evolve an API without breaking clients. API clients generally rely on the API to be a specific way that prevents the API from changing organically. This is because the API clients are strongly coupled to the implementation of the API design.
+It's difficult to evolve an API without breaking clients. API clients are generally relient on an API to be a specific way, and this reliance—or coupling—prevents APIs from evolving organically over time. This coupling puts a burden on the API designer to make long-term decisions early on and requires them to make changes cautiously so not to break clients.
 
-When talking of coupling here, we talk about API changes that require client changes. 
+Graphable JSON weakens this coupling to embrace change over time. It looks at the common types of strong coupling that are found in many API designs and implementations and tries to encourage patterns that makes them easier to deal with.
 
 ### How we strongly couple the client and server
 
-Examples of strong coupling in an API include:
+Some of the key categories of strong coupling that Graphable JSON addresses are:
 
-1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. Graphable JSON addresses this by focusing on relationships. 
-1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource. Graphable JSON addresses this with hyperlinks. A value can either be included in a response or linked.
-1. **Coupling to type**: Clients generally depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable, allowing versions of a relationship to live together and phased out.
+1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. API providers should be able to change from a single value to many values to paginated values without a new client.
+1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource, which means a client must always know where a resource will be. API providers should be able to move resources and data around without fear of breaking clients.
+1. **Coupling to type**: Clients generally depend on a specific type in an API. To prevents breaking changes in these clients, API providers version the entire API or resource. 
 
-When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
+When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to not break existing clients.
 
 ### Trying to weaken coupling
 
