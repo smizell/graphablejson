@@ -407,14 +407,18 @@ For now, this pattern is a good fit for internal APIs where client and API devel
 
 ### How does Graphable JSON deal with vocabulary changes?
 
-Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools.
+Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools. However, please open an issue to discuss this if you have ideas how this might work.
 
 ### How does being able to evolve from one value to many values help?
 
 While this specification frames the problem as reducing breaking changes, Graphable JSON is also concerned with shifting how API designers might think about the API design. It's not that an API designer might evolve from a single value to many values—it's that they don't have think about it. Should a value be an array? Its own resource? What about pagination? Should it be included in a response of another resource? All of these questions disappear because their answers are deferred until later.
 
+### What is the relationship with JSON-LD?
+
+Graphable JSON borrows the graph idea from JSON-LD. JSON-LD is more robust and more widely used. However, the guiding principle behind Graphable JSON is to make a specification that is small and composable with other specifications along with making broad ideas more accessible. It is meant to augment larger ideas like JSON-LD.
+
 ## About this document
 
 This document was authored by Stephen Mizell in an effort to lower the barrier to entry for implementing and consuming APIs. This document is licensed under the MIT license. The requirements here conform to RFC 2119.
 
-This specification was heavily inspired by the way [JSON-LD](https://json-ld.org/) handles data as a graph.
+This specification was heavily inspired by the way [JSON-LD](https://json-ld.org/) handles data as a graph. Jim Weirich's [Grand Unified Theory of Software Design](https://vimeo.com/10837903) also influenced the thinking behind weakening breaking changes.
