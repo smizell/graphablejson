@@ -1,20 +1,32 @@
 # Graphable JSON Specification
 
-Graphable JSON is a specification that defines a contract between a client and a server in order to reduce or eliminate common breaking changes. The goal is to allow APIs to evolve independently by weakening the coupling between clients and servers.
+Graphable JSON is a specification that defines a contract between a client and a API in order to reduce or eliminate common breaking changes and help APIs evolve over time.
 
 ## Overview
 
-Graphable JSON aims to weaken the coupling between clients and servers by weakening coupling that is commonly used in API designs. Examples of strong coupling in an API include:
+It's difficult to evolve an API without breaking clients. API clients are generally relient on an API to be a specific way, and this reliance—or coupling—prevents APIs from evolving organically over time. This coupling puts a burden on the API designer to make long-term decisions early on and requires them to make changes cautiously so not to break clients.
 
-1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. Graphable JSON addresses this by focusing on relationships. 
-1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource. Graphable JSON addresses this with hyperlinks. A value can either be included in a response or linked.
-1. **Coupling to type**: Clients generally depend on a specific type in an API. API providers will usually version entire APIs or resources in order to change the type. Graphable JSON addresses this by making properties versionable, allowing versions of a relationship to live together and phased out.
+Graphable JSON weakens this coupling to embrace change over time. It looks at the common types of strong coupling that are found in many API designs and implementations and tries to encourage patterns that makes them easier to deal with.
 
-When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to note break existing clients.
+### How clients and APIs are strongly coupled now
 
-Graphable JSON defers these decisions to later, allowing APIs to evolve over time without client breakages. API designers can convert values into their own resources later and even link to new resources. Additionally, Graphable JSON allows for converting arrays of values to paginated resources called collections. API designers don't have to chose between an array or collection upfront.
+Some of the key categories of strong coupling that Graphable JSON addresses are:
 
-To note, it is impossible to remove coupling, but it is possible to make that coupling easier to deal with over time. The Graphable JSON approach weakens coupling by imposing rules for dealing with JSON in hopes of making API design easier and APIs more evolvable.
+1. **Coupling to structure**: Client are generally coupled to a specific structure of an API resource or schema. It's not easy to convert from a single value to an array of values without breaking clients. API providers should be able to change from a single value to many values to paginated values without a new client.
+1. **Coupling to location**: Clients are generally coupled to the URL structure or location of a resource, which means a client must always know where a resource will be. API providers should be able to move resources and data around without fear of breaking clients.
+1. **Coupling to type**: Clients generally depend on a specific type in an API. To prevents breaking changes in these clients, API providers version the entire API or resource. 
+
+When clients couple to structure, location, and type, API providers must make long-term decisions about their design up front. Additionally, they must take extra care when changing the API to not break existing clients.
+
+### How we can weaken client and API coupling
+
+**Graphable JSON aims to weaken the coupling between clients and APIs by weakening the coupling**. In other words, Graphable JSON defines rules that allow an API change without requiring the clients to change.
+
+1. **Graphs over strict structure**: Instead of defining and interacting with data in as a strict tree, Graphable JSON encourages treating data as a graph. An API designer might say a customer has an email. With a strict structure, that relationship is fixed to one email or many emails. With a graph, the designer does not need to specify how many emails, and a client can rely on one email or many emails depending on the context.
+1. **Links over hardcoding**: Instead of hardcoding a client to expect a property, a client should look for the property or a link to the values. Links are the reason the web as we know it thrived, and links can help make APIs more durable.
+1. **Queries over directly interacting with JSON**: For JSON responses to evolve independently, client implementations must interact with the API responses by specifying and querying what it expects to find rather than interacting with the JSON directly. This separation is the key to weakening coupling.
+
+With these principles in mind, Graphable JSON can impose rules on designing and interacting with an API that encourage longevity and agility. Teams can iterate on designs and changes quickly with more confidence in how the API changes affect clients. API providers can make optimizations to help clients without redeploying updated clients.
 
 ## Specification
 
@@ -27,7 +39,7 @@ This specification adds the following rules when dealing with JSON:
 
 ### Treating properties as relationships
 
-In many APIs, a property in a JSON object denotes a structure—it shows how an object has a property of a given value. There are tools for validating this specific structure that create strong coupling between the client and server. This creates rigidity and prevents the object from evolving organically over time.
+In many APIs, a property in a JSON object denotes a structure—it shows how an object has a property of a given value. There are tools for validating this specific structure that create strong coupling between the client and API. This creates rigidity and prevents the object from evolving organically over time.
 
 Rather than structure, Graphable JSON denotes a property as a relationship to a stream of values. This means the stream MAY be:
 
@@ -367,7 +379,7 @@ There are also other areas to consider to protect against breaking changes.
 
 1. Clients SHOULD NOT be coded to specific HTTP status codes. They should look for successes, redirects, and failures. Client developers should not have to write code that specifies status codes unless necessary.
 1. Clients SHOULD NOT be coded to specific HTTP methods. Those methods should be derived from a contract or—better yet—from forms found in the API responses.
-1. Clients SHOULD NOT build URLs, but rather rely on the server to include relevant links in the responses.
+1. Clients SHOULD NOT build URLs, but rather rely on the API to include relevant links in the responses.
 
 Following rules like these can allow the client to get all of the benefits of something like GraphQL without using GraphQL itself. In other words, the client developer can specify what they want from the API and the client itself can go out and get the necessary data—whether it's in a single response or many responses.
 
