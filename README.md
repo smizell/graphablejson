@@ -409,7 +409,7 @@ For now, this pattern is a good fit for internal APIs where client and API devel
 
 Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools.
 
-## How does being able to evolve from one value to many values help?
+### How does being able to evolve from one value to many values help?
 
 While this specification frames the problem as reducing breaking changes, Graphable JSON is also concerned with shifting how API designers might think about the API design. It's not that an API designer might evolve from a single value to many values—it's that they don't have think about it. Should a value be an array? Its own resource? What about pagination? Should it be included in a response of another resource? All of these questions disappear because their answers are deferred until later.
 
