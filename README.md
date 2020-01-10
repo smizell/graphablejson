@@ -395,6 +395,8 @@ This brings up an important point. Starting out, an API _could_ be a single resp
 
 The recommendation right now is to use a [profile link](https://tools.ietf.org/html/rfc6906) in the link header or a profile by way of RESTful JSON and the `application/vnd.restful+json` media type. The profile link value for now should be `https://github.com/smizell/graphablejson`.
 
+**Note** this may change later.
+
 ### Will these rules break normal clients who aren't following the Graphable JSON rules?
 
 Yes, if a client isn't expecting a value to change as proposed in Graphable JSON, it would probably break. However, the idea behind Graphable JSON is that both the client and API agree on how the representation will change over time. The agreement is meant to weaken the coupling.
