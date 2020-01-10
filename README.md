@@ -399,7 +399,7 @@ The recommendation right now is to use a [profile link](https://tools.ietf.org/h
 
 Yes, if a client isn't expecting a value to change as proposed in Graphable JSON, it would probably break. However, the idea behind Graphable JSON is that both the client and API agree on how the representation will change over time. The agreement is meant to weaken the coupling.
 
-If it's necessary to accommodate both common JSON representations and Graphable JSON representation, an API provider might consider using `application/json` as a strict, commonly-follow JSON representation and specify the Graphable JSON representation as described above.
+If it's necessary to accommodate both common JSON representations and Graphable JSON representation, an API provider might consider using `application/json` as a strict, commonly-followed JSON representation and specify the Graphable JSON representation as described above.
 
 ### When might someone use this specification?
 
@@ -407,11 +407,13 @@ For now, this pattern is a good fit for internal APIs where client and API devel
 
 ### How does Graphable JSON deal with vocabulary changes?
 
-Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools. However, please open an issue to discuss this if you have ideas how this might work.
+Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools.
+
+Graphable JSON can be viewed as a precursor to formats and tools that make vocabulary changes possible. A tool that allows developers to specify properties independent of the structure of a representation can more easily map between a vocabulary and the API. In other words, the weakened coupling that Graphable JSON provides can be a step toward building tools around vocabularies.
 
 ### How does being able to evolve from one value to many values help?
 
-While this specification frames the problem as reducing breaking changes, Graphable JSON is also concerned with shifting how API designers might think about the API design. It's not that an API designer might evolve from a single value to many values—it's that they don't have think about it. Should a value be an array? Its own resource? What about pagination? Should it be included in a response of another resource? All of these questions disappear because their answers are deferred until later.
+While this specification frames the problem as reducing breaking changes, Graphable JSON is also concerned with shifting how API designers might think about the API design. It's not just that an API designer might evolve a single to many values—it's that they don't have think about it. Should a value be an array? Its own resource? What about pagination? Should it be included in a response of another resource? All of these questions disappear because their answers are deferred until later.
 
 ### What is the relationship with JSON-LD?
 
