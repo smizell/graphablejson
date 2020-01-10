@@ -377,6 +377,30 @@ This brings up an important point. Starting out, an API _could_ be a single resp
 
 1. [Graphable JSON JavaScript](https://github.com/smizell/graphablejson-js)
 
+## FAQs
+
+### How should a client distinguish between common JSON and Graphable JSON?
+
+The recommendation right now is to use a [profile link](https://tools.ietf.org/html/rfc6906) in the link header or a profile by way of RESTful JSON and the `application/vnd.restful+json` media type. The profile link value for now should be `https://github.com/smizell/graphablejson`.
+
+### Will these rules break normal clients who aren't following the Graphable JSON rules?
+
+Yes, if a client isn't expecting a value to change as proposed in Graphable JSON, it would probably break. However, the idea behind Graphable JSON is that both the client and API agree on how the representation will change over time. The agreement is meant to weaken the coupling.
+
+If it's necessary to accommodate both common JSON representations and Graphable JSON representation, an API provider might consider using `application/json` as a strict, commonly-follow JSON representation and specify the Graphable JSON representation as described above.
+
+### When might someone use this specification?
+
+For now, this pattern is a good fit for internal APIs where client and API developers are able to communicate and work closely together. As mentioned, these rules are probably too extreme for a public API. However, using `application/json` to mitigate those issues would help.
+
+### How does Graphable JSON deal with vocabulary changes?
+
+Graphable JSON focuses on a few breaking changes that may occur in APIs. It currently does not focus on defining semantics or vocabularies or specifying how those semantics and vocabularies might change. That will be left up to other formats and tools.
+
+## How does being able to evolve from one value to many values help?
+
+While this specification frames the problem as reducing breaking changes, Graphable JSON is also concerned with shifting how API designers might think about the API design. It's not that an API designer might evolve from a single value to many values—it's that they don't have think about it. Should a value be an array? Its own resource? What about pagination? Should it be included in a response of another resource? All of these questions disappear because their answers are deferred until later.
+
 ## About this document
 
 This document was authored by Stephen Mizell in an effort to lower the barrier to entry for implementing and consuming APIs. This document is licensed under the MIT license. The requirements here conform to RFC 2119.
