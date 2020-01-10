@@ -417,7 +417,7 @@ While this specification frames the problem as reducing breaking changes, Grapha
 
 ### What is the relationship with JSON-LD?
 
-Graphable JSON borrows the graph idea from JSON-LD. JSON-LD is more robust and more widely used. However, the guiding principle behind Graphable JSON is to make a specification that is small and composable with other specifications along with making broad ideas more accessible. It is meant to augment larger ideas like JSON-LD.
+Graphable JSON borrows the graph idea from JSON-LD. JSON-LD is more robust and more widely used. The guiding principle behind Graphable JSON is to make a specification that is small and composable with other specifications along with making broad ideas more accessible. It is meant to augment larger ideas like JSON-LD.
 
 ## About this document
 
